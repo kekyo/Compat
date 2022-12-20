@@ -16,7 +16,11 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
     <PackageReference Include="Microsoft.Bcl.Async" Version="1.0.168" />
   </ItemGroup>
-    
+   
+  <ItemGroup Condition="'$(TargetFramework)' != 'net35'">
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+ 
   <ItemGroup>
     <None Include="..\Images\Compat.100.png" Pack="true" PackagePath="" />
   </ItemGroup>
