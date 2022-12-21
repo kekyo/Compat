@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace System.Linq;
 
-public sealed class EnumerableExtensionExTest
+public sealed class EnumerableExTest
 {
     [Test]
     public void Append1()
