@@ -22,7 +22,7 @@
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' != 'net35'">
+  <ItemGroup Condition="('$(TargetFramework)' != 'net35') AND ('$(TargetFramework)' != 'netstandard2.0') AND ('$(TargetFramework)' != 'netstandard2.1') AND ('$(TargetFramework)' != 'netcoreapp2.0') AND ('$(TargetFramework)' != 'netcoreapp2.1') AND ('$(TargetFramework)' != 'netcoreapp2.2') AND ('$(TargetFramework)' != 'netcoreapp3.0') AND ('$(TargetFramework)' != 'netcoreapp3.1') AND ('$(TargetFramework)' != 'net5.0') AND ('$(TargetFramework)' != 'net6.0') AND ('$(TargetFramework)' != 'net7.0')">
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
  
