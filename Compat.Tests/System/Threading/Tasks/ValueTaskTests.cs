@@ -29,6 +29,8 @@ public sealed class ValueTaskTests
         await new ValueTask(Task.Factory.CompletedTask());
     }
 
+    ///////////////////////////////////////////////////////////////////
+
     [Test]
     public async Task Exception()
     {
@@ -43,6 +45,8 @@ public sealed class ValueTaskTests
             Assert.AreSame(ex, actual);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
 
     [Test]
     public async Task Value()
@@ -59,6 +63,8 @@ public sealed class ValueTaskTests
 
         Assert.AreEqual(111, actual);
     }
+
+    ///////////////////////////////////////////////////////////////////
 
     [Test]
     public async Task ExceptionT()
@@ -77,6 +83,8 @@ public sealed class ValueTaskTests
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+
     [Test]
     public async Task AsTask()
     {
@@ -89,5 +97,117 @@ public sealed class ValueTaskTests
         var actual = await new ValueTask<int>(111).AsTask();
 
         Assert.AreEqual(111, actual);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+
+    [Test]
+    public void IsCompleted1()
+    {
+        var task = new ValueTask();
+
+        Assert.IsTrue(task.IsCompleted);
+    }
+
+    [Test]
+    public void IsCompleted2()
+    {
+        var tcs = new TaskCompletionSource<int>();
+        var task = new ValueTask(tcs.Task);
+
+        Assert.IsFalse(task.IsCompleted);
+    }
+
+    [Test]
+    public void IsCompletedT1()
+    {
+        var task = new ValueTask<int>(111);
+
+        Assert.IsTrue(task.IsCompleted);
+    }
+
+    [Test]
+    public void IsCompletedT2()
+    {
+        var tcs = new TaskCompletionSource<int>();
+        var task = new ValueTask<int>(tcs.Task);
+
+        Assert.IsFalse(task.IsCompleted);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+
+    [Test]
+    public void IsCanceled1()
+    {
+        var task = new ValueTask();
+
+        Assert.IsFalse(task.IsCanceled);
+    }
+
+    [Test]
+    public void IsCanceled2()
+    {
+        var tcs = new TaskCompletionSource<int>();
+        tcs.SetCanceled();
+        var task = new ValueTask(tcs.Task);
+
+        Assert.IsTrue(task.IsCanceled);
+    }
+
+    [Test]
+    public void IsCanceledT1()
+    {
+        var task = new ValueTask<int>(111);
+
+        Assert.IsFalse(task.IsCanceled);
+    }
+
+    [Test]
+    public void IsCanceledT2()
+    {
+        var tcs = new TaskCompletionSource<int>();
+        tcs.SetCanceled();
+        var task = new ValueTask<int>(tcs.Task);
+
+        Assert.IsTrue(task.IsCanceled);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+
+    [Test]
+    public void IsFaulted1()
+    {
+        var task = new ValueTask();
+
+        Assert.IsFalse(task.IsFaulted);
+    }
+
+    [Test]
+    public void IsFaulted2()
+    {
+        var tcs = new TaskCompletionSource<int>();
+        tcs.SetException(new TestException());
+        var task = new ValueTask(tcs.Task);
+
+        Assert.IsTrue(task.IsFaulted);
+    }
+
+    [Test]
+    public void IsFaultedT1()
+    {
+        var task = new ValueTask<int>(111);
+
+        Assert.IsFalse(task.IsFaulted);
+    }
+
+    [Test]
+    public void IsFaultedT2()
+    {
+        var tcs = new TaskCompletionSource<int>();
+        tcs.SetException(new TestException());
+        var task = new ValueTask<int>(tcs.Task);
+
+        Assert.IsTrue(task.IsFaulted);
     }
 }

@@ -18,6 +18,15 @@ public readonly struct ValueTask
     public ValueTask(Task task) =>
         this.task = task;
 
+    public bool IsCompleted =>
+        this.task?.IsCompleted ?? true;
+
+    public bool IsCanceled =>
+        this.task?.IsCanceled ?? false;
+
+    public bool IsFaulted =>
+        this.task?.IsFaulted ?? false;
+
     public Task AsTask() =>
         this.task ?? Task.Factory.CompletedTask();
 
@@ -38,6 +47,15 @@ public readonly struct ValueTask<TValue>
         this.value = default!;
         this.task = task;
     }
+
+    public bool IsCompleted =>
+        this.task?.IsCompleted ?? true;
+
+    public bool IsCanceled =>
+        this.task?.IsCanceled ?? false;
+
+    public bool IsFaulted =>
+        this.task?.IsFaulted ?? false;
 
     public Task<TValue> AsTask() =>
         this.task ?? Task.Factory.FromResult(this.value);
