@@ -7,7 +7,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#if NET20 || NET35 || NET40 || NET45
+#if NET20 || NET35 || NET40 || NET45 || NET452
 
 namespace System.Runtime.CompilerServices;
 

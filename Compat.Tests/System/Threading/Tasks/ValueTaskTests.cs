@@ -13,6 +13,10 @@ namespace System.Threading.Tasks;
 
 public sealed class ValueTaskTests
 {
+    private sealed class TestException : Exception
+    {
+    }
+
     [Test]
     public async Task Void()
     {
@@ -28,13 +32,13 @@ public sealed class ValueTaskTests
     [Test]
     public async Task Exception()
     {
-        var actual = new ApplicationException();
+        var actual = new TestException();
         try
         {
             await new ValueTask(Task.Factory.FromException(actual));
             Assert.Fail();
         }
-        catch (ApplicationException ex)
+        catch (TestException ex)
         {
             Assert.AreSame(ex, actual);
         }
@@ -60,16 +64,30 @@ public sealed class ValueTaskTests
     public async Task ExceptionT()
     {
         var tcs = new TaskCompletionSource<int>();
-        var actual = new ApplicationException();
+        var actual = new TestException();
         try
         {
             tcs.SetException(actual);
             await new ValueTask<int>(tcs.Task);
             Assert.Fail();
         }
-        catch (ApplicationException ex)
+        catch (TestException ex)
         {
             Assert.AreSame(ex, actual);
         }
+    }
+
+    [Test]
+    public async Task AsTask()
+    {
+        await new ValueTask().AsTask();
+    }
+
+    [Test]
+    public async Task AsTaskT()
+    {
+        var actual = await new ValueTask<int>(111).AsTask();
+
+        Assert.AreEqual(111, actual);
     }
 }

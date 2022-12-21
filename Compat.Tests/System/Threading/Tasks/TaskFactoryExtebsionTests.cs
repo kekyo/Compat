@@ -13,6 +13,10 @@ namespace System.Threading.Tasks;
 
 public sealed class TaskFactoryExtebsionTests
 {
+    private sealed class TestException : Exception
+    {
+    }
+
     [Test]
     public async Task FromResult()
     {
@@ -23,13 +27,13 @@ public sealed class TaskFactoryExtebsionTests
     [Test]
     public async Task FromException()
     {
-        var actual = new ApplicationException();
+        var actual = new TestException();
         try
         {
             await Task.Factory.FromException(actual);
             Assert.Fail();
         }
-        catch (ApplicationException ex)
+        catch (TestException ex)
         {
             Assert.AreSame(ex, actual);
         }
