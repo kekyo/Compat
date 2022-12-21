@@ -50,9 +50,11 @@ The list is not completed minor status.
 |Members|Status|
 |:----|:----|
 |`System.ValueTuple`|Added 4 type argument versions.|
+|`System.Threading.Tasks.Task`|`WaitAsync` methods.|
 |`System.Threading.Tasks.TaskEx`|Ports with `AsyncBridge` and `Microsoft.Bcl.Async`. Added some lack members.|
 |`System.Threading.Tasks.ValueTask`|Supported async method builders (async-awaitable)|
-|String interpolation features|`FormattedString` and `DefaultInterpolatedStringHandler`|
+|String interpolation features|`FormattedString` and `DefaultInterpolatedStringHandler` types.|
+|`System.Linq` operators|`Append`, `Prepend`, `TakeLast`, `SkipLast` and `ToHashSet` methods.|
 
 Lack some `Task` members in earlier third-party library.
 
@@ -64,6 +66,8 @@ Lack some `Task` members in earlier third-party library.
 ----
 
 ## Tips
+
+### Build .NET Framework assembly on Linux or others
 
 When you want to build .NET Framework project in Linux and other non-Windows environment,
 that package supports ability for referencing of .NET Framework assemblies:
