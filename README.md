@@ -54,9 +54,9 @@ The list is not completed minor status.
 |`System.Threading.Tasks.TaskEx`|Ports with `AsyncBridge` and `Microsoft.Bcl.Async`. Added some lack members.|
 |`System.Threading.Tasks.ValueTask`|Supported async method builders (async-awaitable)|
 |String interpolation features|`FormattedString` and `DefaultInterpolatedStringHandler` types.|
-|`System.Linq` operators|`Append`, `Prepend`, `TakeLast`, `SkipLast` and `ToHashSet` methods.|
+|`System.Linq` operators|`Append`, `Prepend`, `TakeLast`, `SkipLast`, `Zip` and `ToHashSet` methods.|
 
-Lack some `Task` members in earlier third-party library.
+Lack some `Task` members in earlier third-party library:
 
 * `System.Threading.Tasks.TaskEx.FromException()` is not defined in third-party library.
   * Use `Task.Factory.FromException()` instead.
@@ -96,7 +96,7 @@ Backport PRs are welcome. The following is our backporting policy:
   * Example: [Microsoft.Bcl.Async package](https://www.nuget.org/packages/Microsoft.Bcl.Async), which provides backward compatibility of `Task` with .NET Framework 4.0.
 * When referencing third-party libraries, do not generate unnecessary references.
   * For example, `net6.0` is nearly up-to-date, and references to libraries should not be included when using `net6.0`. To achieve this, define the `PackageReference` to be excluded by `Condition`.
-* Increase the TFM if it is to fill an incompatibility with a TFM that is not currently included.
+* Add the new TFM if it is to fill an incompatibility with a TFM that is not currently included.
 * Do not include non-backporting any extensions.
 * Write some kind of unit test. Of course, a comprehensive and exhaustive test code would be perfect.
 
