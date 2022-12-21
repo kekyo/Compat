@@ -125,6 +125,18 @@ public sealed class EnumerableExTest
     }
 
     [Test]
+    public void ZipDiffer()
+    {
+        var left = new[] { 123, 456, 789, };
+        var right = new[] { "AAA", "BBB", };
+        var actual = left.Zip(right, (l, r) => (l, r));
+
+        Assert.AreEqual(
+            new[] { (123, "AAA"), (456, "BBB"), },
+            actual);
+    }
+
+    [Test]
     public void ZipSimple()
     {
         var left = new[] { 123, 456, 789, };
@@ -133,6 +145,18 @@ public sealed class EnumerableExTest
 
         Assert.AreEqual(
             new[] { (123, "AAA"), (456, "BBB"), (789, "CCC"), },
+            actual);
+    }
+
+    [Test]
+    public void ZipSimpleDiffer()
+    {
+        var left = new[] { 123, 456, 789, };
+        var right = new[] { "AAA", "BBB", };
+        var actual = left.Zip(right);
+
+        Assert.AreEqual(
+            new[] { (123, "AAA"), (456, "BBB"), },
             actual);
     }
 
