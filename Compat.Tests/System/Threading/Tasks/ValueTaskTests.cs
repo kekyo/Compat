@@ -8,8 +8,12 @@
 ////////////////////////////////////////////////////////////////////////////
 
 using NUnit.Framework;
+using Lepracaun;
 
 namespace System.Threading.Tasks;
+
+// Async method lacks 'await' operators and will run synchronously
+#pragma warning disable CS1998
 
 public sealed class ValueTaskTests
 {
@@ -209,5 +213,205 @@ public sealed class ValueTaskTests
         var task = new ValueTask<int>(tcs.Task);
 
         Assert.IsTrue(task.IsFaulted);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+
+    [Test]
+    public async Task AwaitableStateMachineInImmediateReturn()
+    {
+        static async ValueTask Immediate()
+        {
+        }
+
+        await Immediate();
+    }
+
+    [Test]
+    public async Task AwaitableStateMachineInDelayedReturn()
+    {
+        static async ValueTask Delay()
+        {
+            await TaskEx.Delay(100);
+        }
+
+        await Delay();
+    }
+
+    [Test]
+    public async Task AwaitableStateMachineInImmediateThrow()
+    {
+        static async ValueTask Immediate(Exception ex)
+        {
+            throw ex;
+        }
+
+        var ex = new TestException();
+        try
+        {
+            await Immediate(ex);
+            Assert.Fail();
+        }
+        catch (TestException ex2)
+        {
+            Assert.AreSame(ex, ex2);
+        }
+    }
+
+    [Test]
+    public async Task AwaitableStateMachineInDelayedThrow()
+    {
+        static async ValueTask Delay(Exception ex)
+        {
+            await TaskEx.Delay(100);
+            throw ex;
+        }
+
+        var ex = new TestException();
+        try
+        {
+            await Delay(ex);
+            Assert.Fail();
+        }
+        catch (TestException ex2)
+        {
+            Assert.AreSame(ex, ex2);
+        }
+    }
+
+    [Test]
+    public async Task AwaitableStateMachineInSynchContextImmediate()
+    {
+        var expected = Thread.CurrentThread.ManagedThreadId;
+
+        async ValueTask Run()
+        {
+            var actual = Thread.CurrentThread.ManagedThreadId;
+            Assert.AreEqual(expected, actual);
+        }
+
+        var app = new Application();
+        app.Run(Run().AsTask());
+    }
+
+    [Test]
+    public async Task AwaitableStateMachineInSynchContextDelay()
+    {
+        var expected = Thread.CurrentThread.ManagedThreadId;
+
+        async ValueTask Run()
+        {
+            await TaskEx.Delay(100);
+            var actual = Thread.CurrentThread.ManagedThreadId;
+            Assert.AreEqual(expected, actual);
+        }
+
+        var app = new Application();
+        app.Run(Run().AsTask());
+    }
+
+    ///////////////////////////////////////////////////////////////////
+
+    [Test]
+    public async Task AwaitableStateMachineTInImmediateReturn()
+    {
+        static async ValueTask<int> Immediate()
+        {
+            return 111;
+        }
+
+        var actual = await Immediate();
+
+        Assert.AreEqual(111, actual);
+    }
+
+    [Test]
+    public async Task AwaitableStateMachineTInDelayedReturn()
+    {
+        static async ValueTask<int> Delay()
+        {
+            await TaskEx.Delay(100);
+            return 111;
+        }
+
+        var actual = await Delay();
+
+        Assert.AreEqual(111, actual);
+    }
+
+    [Test]
+    public async Task AwaitableStateMachineTInImmediateThrow()
+    {
+        static async ValueTask<int> Immediate(Exception ex)
+        {
+            throw ex;
+        }
+
+        var ex = new TestException();
+        try
+        {
+            var _ = await Immediate(ex);
+            Assert.Fail();
+        }
+        catch (TestException ex2)
+        {
+            Assert.AreSame(ex, ex2);
+        }
+    }
+
+    [Test]
+    public async Task AwaitableStateMachineTInDelayedThrow()
+    {
+        static async ValueTask<int> Delay(Exception ex)
+        {
+            await TaskEx.Delay(100);
+            throw ex;
+        }
+
+        var ex = new TestException();
+        try
+        {
+            var _ = await Delay(ex);
+            Assert.Fail();
+        }
+        catch (TestException ex2)
+        {
+            Assert.AreSame(ex, ex2);
+        }
+    }
+
+    [Test]
+    public async Task AwaitableStateMachineTInSynchContextImmediate()
+    {
+        var expected = Thread.CurrentThread.ManagedThreadId;
+
+        async ValueTask<int> Run()
+        {
+            var actual = Thread.CurrentThread.ManagedThreadId;
+            Assert.AreEqual(expected, actual);
+
+            return 111;
+        }
+
+        var app = new Application();
+        app.Run(Run().AsTask());
+    }
+
+    [Test]
+    public async Task AwaitableStateMachineTInSynchContextDelay()
+    {
+        var expected = Thread.CurrentThread.ManagedThreadId;
+
+        async ValueTask<int> Run()
+        {
+            await TaskEx.Delay(100);
+            var actual = Thread.CurrentThread.ManagedThreadId;
+            Assert.AreEqual(expected, actual);
+
+            return 111;
+        }
+
+        var app = new Application();
+        app.Run(Run().AsTask());
     }
 }

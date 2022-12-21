@@ -31,6 +31,8 @@ public sealed class TaskExTests
     }
 #endif
 
+    ///////////////////////////////////////////////////////////////////
+
     [Test]
     public async Task DelayTimeSpan()
     {
@@ -52,6 +54,8 @@ public sealed class TaskExTests
         var elapsed = sw.ElapsedMilliseconds;
         Assert.GreaterOrEqual(elapsed, 1000 - 250);
     }
+
+    ///////////////////////////////////////////////////////////////////
 
     [Test]
     public async Task WhenAll1()
@@ -128,6 +132,8 @@ public sealed class TaskExTests
 
         Assert.AreEqual(expected, actual);
     }
+
+    ///////////////////////////////////////////////////////////////////
 
     [Test]
     public async Task WhenAny1()
@@ -237,8 +243,27 @@ public sealed class TaskExTests
         Assert.LessOrEqual(differ, 250);
     }
 
+    ///////////////////////////////////////////////////////////////////
+
     [Test]
     public async Task Run()
+    {
+        void Delay(ref int actual)
+        {
+            Thread.Sleep(100);
+            Interlocked.Increment(ref actual);
+        }
+
+        var actual = 0;
+
+        await TaskEx.WhenAll(
+            Enumerable.Range(0, 10).Select(index => TaskEx.Run(() => Delay(ref actual))));
+
+        Assert.AreEqual(10, actual);
+    }
+
+    [Test]
+    public async Task RunT()
     {
         static int Delay(int value)
         {

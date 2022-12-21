@@ -68,6 +68,9 @@ public static class TaskEx
     public static Task<Task<T>> WhenAny<T>(IEnumerable<Task<T>> enumerable) =>
         Task.WhenAny(enumerable);
 
+    public static Task Run(Action action) =>
+        Task.Run(action);
+
     public static Task<T> Run<T>(Func<T> action) =>
         Task.Run(action);
 }

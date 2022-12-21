@@ -9,8 +9,11 @@
 
 #if NET35 || NET40 || NET45 || NET452 || NETSTANDARD1_3 || NETSTANDARD1_6
 
+using System.Runtime.CompilerServices;
+
 namespace System.Threading.Tasks;
 
+[AsyncMethodBuilder(typeof(AsyncValueTaskMethodBuilder))]
 public readonly struct ValueTask
 {
     private readonly Task? task;
@@ -34,6 +37,7 @@ public readonly struct ValueTask
         new(this.task);
 }
 
+[AsyncMethodBuilder(typeof(AsyncValueTaskMethodBuilder<>))]
 public readonly struct ValueTask<TValue>
 {
     private readonly TValue value;
