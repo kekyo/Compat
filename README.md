@@ -20,7 +20,7 @@ Compat - Totally makes compatibility layer for .NET platforms.
 
 Totally makes compatibility layer for .NET platforms.
 
-.NET 7 to older versions of the .NET BCL, such as .NET Framework 3.5. NET BCL, with as few dependencies as possible.
+.NET 7 to older versions of the .NET BCL, such as .NET Framework 3.5 BCL, with as few dependencies as possible.
 For example, `net35` does not have a `System.String.IsNullOrWhitespace()` method.
 `System.StringEx.IsNullOrWhitespace()` method to provide an alternative for such incompatible code.
 
@@ -51,7 +51,7 @@ The list is not completed minor status.
 |:----|:----|
 |`System.ValueTuple`|Added 4 type argument versions.|
 |`System.Threading.Tasks.TaskEx`|Ports with `AsyncBridge` and `Microsoft.Bcl.Async`. Added some lack members.|
-|`System.Threading.Tasks.ValueType`|Supported async method builders (async-awaitable)|
+|`System.Threading.Tasks.ValueTask`|Supported async method builders (async-awaitable)|
 |String interpolation features|`FormattedString` and `DefaultInterpolatedStringHandler`|
 
 Lack some `Task` members in earlier third-party library.
@@ -66,7 +66,7 @@ Lack some `Task` members in earlier third-party library.
 ## Tips
 
 When you want to build .NET Framework project in Linux and other non-Windows environment,
-that package supports ability of .NET Framework reference assemblies:
+that package supports ability for referencing of .NET Framework assemblies:
 
 ```xml
 <ItemGroup>
