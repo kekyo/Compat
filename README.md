@@ -39,11 +39,20 @@ In other words, this library is not a complete backporting library, but aims to 
 * .NET 7, 6, 5
 * .NET Core 3.1, 3.0, 2.2, 2.1, 2.0
 * .NET Standard 2.1, 2.0, 1.6, 1.3
-* .NET Framework 4.8, 4.6.1, 4.5.2, 4.5, 4.0, 3.5
+* .NET Framework 4.8, 4.6.2, 4.6.1, 4.5.2, 4.5, 4.0, 3.5
 
 ----
 
-## Note
+## Porting status
+
+The list is not completed minor status.
+
+|Members|Status|
+|:----|:----|
+|`System.ValueTuple`|Added 4 type argument versions.|
+|`System.Threading.Tasks.TaskEx`|Ports with `AsyncBridge` and `Microsoft.Bcl.Async`. Added some lack members.|
+|`System.Threading.Tasks.ValueType`|Supported async method builders (async-awaitable)|
+|String interpolation features|`FormattedString` and `DefaultInterpolatedStringHandler`|
 
 Lack some `Task` members in earlier third-party library.
 
@@ -51,6 +60,21 @@ Lack some `Task` members in earlier third-party library.
   * Use `Task.Factory.FromException()` instead.
   * Mostly useful `From{...}` type method. So defined `Task.Factory.FromResult()` in near place.
   * Mostly useful `CompletedTask` property. So defined `Task.Factory.CompletedTask()` method in near place.
+
+----
+
+## Tips
+
+When you want to build .NET Framework project in Linux and other non-Windows environment,
+that package supports ability of .NET Framework reference assemblies:
+
+```xml
+<ItemGroup>
+  <PackageReference
+    Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3"
+    PrivateAssets="All" />
+</ItemGroup>
+```
 
 ----
 
@@ -77,3 +101,13 @@ Backport PRs are welcome. The following is our backporting policy:
 ## License
 
 Apache-v2.
+
+----
+
+## History
+
+* 0.1.0:
+  * Added `ValueTask`, `ValueTuple` and some minor members.
+  * Adjust dependencies.
+* 0.0.1:
+  * Initial public release.
