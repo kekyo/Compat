@@ -20,17 +20,41 @@ Compat - Totally makes compatibility layer for .NET platforms.
 
 Totally makes compatibility layer for .NET platforms.
 
-.NET 7 to older versions of the .NET BCL, such as .NET Framework 3.5 BCL, with as few dependencies as possible.
-For example, `net35` does not have a `System.String.IsNullOrWhitespace()` method.
-`System.StringEx.IsNullOrWhitespace()` method to provide an alternative for such incompatible code.
+For examples:
 
-In particular, if there is a definition already provided by a third-party library that is a major references to such libraries will occur.
-For example, the `Task` and `TaskEx` classes in `net40` use `Microsoft.Bcl.Async` package.
+```csharp
+// Undefined in net35:
+if (string.IsNullOrWhitespace("ABC"))
+{
+}
 
-In other words, this library is not a complete backporting library, but aims to provide a better environment for porting.
+// Use Compat and use StringEx instead:
+if (StringEx.IsNullOrWhitespace("ABC"))
+{
+}
+```
 
-* Porting should be possible only by recompiling as much as possible.
-* If C# or CLR limitations prevent full porting, some modifications may be necessary.
+```csharp
+// Undefined in most .NET Frameworks without using Compat.
+// (Zip operator simple overload)
+var zipped = left.Zip(right);
+```
+
+```csharp
+// Undefined under net6.0 without using Compat.
+// (WaitAsync method)
+var zipped = this.CalculateAsync().WaitAsync(token);
+```
+
+```csharp
+// Undefined TFM complex condition without using Compat.
+// (ValueTask and ValueTask<T> types)
+public async ValueTask<int> CalculateAsync()
+{
+    // (Has ability of awaitable)
+    await this.RunOtherCalculationAsync();
+}
+```
 
 ----
 
@@ -40,6 +64,12 @@ In other words, this library is not a complete backporting library, but aims to 
 * .NET Core 3.1, 3.0, 2.2, 2.1, 2.0
 * .NET Standard 2.1, 2.0, 1.6, 1.3
 * .NET Framework 4.8, 4.6.2, 4.6.1, 4.5.2, 4.5, 4.0, 3.5
+
+----
+
+## How to use
+
+Install [Compat package.](https://nuget.org/Compat)
 
 ----
 
