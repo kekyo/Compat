@@ -13,6 +13,33 @@ namespace System.Threading.Tasks;
 
 public static class TaskExtension
 {
+    private static bool OnCompleted<T>(
+        Task task, TaskCompletionSource<T> tcs)
+    {
+        if (task.IsCanceled)
+        {
+            tcs.TrySetCanceled();
+            return false;
+        }
+        else if (task.IsFaulted)
+        {
+            // Unwrap
+            if (task.Exception is { } aex && aex.InnerExceptions.Count == 1)
+            {
+                tcs.TrySetException(aex.InnerExceptions[0]);
+            }
+            else
+            {
+                tcs.TrySetException(task.Exception!);
+            }
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     public static Task WaitAsync(
         this Task task,
         CancellationToken ct)
@@ -24,19 +51,10 @@ public static class TaskExtension
 
             task.ContinueWith(t =>
             {
-                if (t.IsCompleted)
+                if (OnCompleted(t, tcs))
                 {
                     tcs.TrySetResult(true);
                 }
-                else if (t.IsCanceled)
-                {
-                    tcs.TrySetCanceled();
-                }
-                else
-                {
-                    tcs.TrySetException(t.Exception!);
-                }
-
                 ctr.Dispose();
             });
 
@@ -59,19 +77,10 @@ public static class TaskExtension
 
             task.ContinueWith(t =>
             {
-                if (t.IsCompleted)
+                if (OnCompleted(t, tcs))
                 {
-                    tcs.TrySetResult(t.GetAwaiter().GetResult());
+                    tcs.TrySetResult(t.Result);
                 }
-                else if (t.IsCanceled)
-                {
-                    tcs.TrySetCanceled();
-                }
-                else
-                {
-                    tcs.TrySetException(t.Exception!);
-                }
-
                 ctr.Dispose();
             });
 
