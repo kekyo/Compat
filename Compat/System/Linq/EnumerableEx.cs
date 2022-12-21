@@ -12,8 +12,6 @@ using System.Collections.Generic;
 
 namespace System.Linq;
 
-#if NETFRAMEWORK || NETSTANDARD1_3 || NETSTANDARD1_6 || NETSTANDARD2_0
-
 public static class EnumerableEx
 {
 #if NET35 || NET40 || NET45 || NET452 || NET461 || NET462 || NETSTANDARD1_3
@@ -45,7 +43,7 @@ public static class EnumerableEx
 #if NET45 || NET452 || NET461 || NET462 || NETSTANDARD1_3
         if (enumerable is IReadOnlyCollection<TValue> rcollT)
         {
-            IEnumerable<TValue> Iterator(IReadOnlyCollection<TValue> rcollT)
+            static IEnumerable<TValue> Iterator(IReadOnlyCollection<TValue> rcollT, int count)
             {
                 var c = Math.Min(rcollT.Count, count);
                 var s = rcollT.Count - c;
@@ -65,25 +63,48 @@ public static class EnumerableEx
                     index++;
                 }
             }
-            return Iterator(rcollT);
+            return Iterator(rcollT, count);
+        }
+        else if (enumerable is IReadOnlyList<TValue> rlistT)
+        {
+            static IEnumerable<TValue> Iterator(IReadOnlyList<TValue> rlistT, int count)
+            {
+                var c = Math.Min(rlistT.Count, count);
+                var s = rlistT.Count - c;
+                for (var index = 0; index < c; index++)
+                {
+                    yield return rlistT[index + s];
+                }
+            }
+            return Iterator(rlistT, count);
         }
         else
 #endif
-        if (enumerable is ICollection<TValue> collT)
+        if (enumerable is IList<TValue> listT)
         {
-            var c = Math.Min(collT.Count, count);
-            var s = collT.Count - c;
-            var arr = new TValue[c];
-            collT.CopyTo(arr, s);
-            return arr;
+            static IEnumerable<TValue> Iterator(IList<TValue> listT, int count)
+            {
+                var c = Math.Min(listT.Count, count);
+                var s = listT.Count - c;
+                for (var index = 0; index < c; index++)
+                {
+                    yield return listT[index + s];
+                }
+            }
+            return Iterator(listT, count);
         }
-        else if (enumerable is ICollection coll)
+        else if (enumerable is IList list)
         {
-            var c = Math.Min(coll.Count, count);
-            var s = coll.Count - c;
-            var arr = new TValue[c];
-            coll.CopyTo(arr, s);
-            return arr;
+            static IEnumerable<TValue> Iterator(IList list, int count)
+            {
+                var c = Math.Min(list.Count, count);
+                var s = list.Count - c;
+                for (var index = 0; index < c; index++)
+                {
+                    yield return (TValue)list[index + s];
+                }
+            }
+            return Iterator(list, count);
         }
         else
         {
@@ -121,11 +142,40 @@ public static class EnumerableEx
     }
 #endif
 
+#if NET35
+    public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(
+        this IEnumerable<TFirst> enumerable1,
+        IEnumerable<TSecond> enumerable2,
+        Func<TFirst, TSecond, TResult> selector)
+    {
+        using var enumerator1 = enumerable1.GetEnumerator();
+        using var enumerator2 = enumerable2.GetEnumerator();
+
+        while (enumerator1.MoveNext() && enumerator2.MoveNext())
+        {
+            yield return selector(enumerator1.Current, enumerator2.Current);
+        }
+    }
+#endif
+
+#if NETFRAMEWORK || NETSTANDARD || NETCOREAPP2_0 || NETCOREAPP2_1 || NETCOREAPP2_2
+    public static IEnumerable<(TFirst, TSecond)> Zip<TFirst, TSecond>(
+        this IEnumerable<TFirst> enumerable1,
+        IEnumerable<TSecond> enumerable2)
+    {
+        using var enumerator1 = enumerable1.GetEnumerator();
+        using var enumerator2 = enumerable2.GetEnumerator();
+
+        while (enumerator1.MoveNext() && enumerator2.MoveNext())
+        {
+            yield return (enumerator1.Current, enumerator2.Current);
+        }
+    }
+#endif
+
 #if NET35 || NET40 || NET45 || NET452 || NET461 || NET462 || NETSTANDARD1_3 || NETSTANDARD1_6 || NETSTANDARD2_0
     public static HashSet<TValue> ToHashSet<TValue>(
         this IEnumerable<TValue> enumerable) =>
         new(enumerable);
 #endif
 }
-
-#endif

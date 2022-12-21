@@ -113,6 +113,32 @@ public sealed class EnumerableExTest
     ///////////////////////////////////////////////////////////////////
 
     [Test]
+    public void Zip()
+    {
+        var left = new[] { 123, 456, 789, };
+        var right = new[] { "AAA", "BBB", "CCC", };
+        var actual = left.Zip(right, (l, r) => (l, r));
+
+        Assert.AreEqual(
+            new[] { (123, "AAA"), (456, "BBB"), (789, "CCC"), },
+            actual);
+    }
+
+    [Test]
+    public void ZipSimple()
+    {
+        var left = new[] { 123, 456, 789, };
+        var right = new[] { "AAA", "BBB", "CCC", };
+        var actual = left.Zip(right);
+
+        Assert.AreEqual(
+            new[] { (123, "AAA"), (456, "BBB"), (789, "CCC"), },
+            actual);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+
+    [Test]
     public void ToHashSet()
     {
         var items = new[] { 123, 456, 789, };
