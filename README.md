@@ -50,11 +50,13 @@ The list is not completed minor status.
 |Members|Status|
 |:----|:----|
 |`System.ValueTuple`|Added 4 type argument versions.|
+|`System.Threading.Tasks.Task`|`WaitAsync` methods.|
 |`System.Threading.Tasks.TaskEx`|Ports with `AsyncBridge` and `Microsoft.Bcl.Async`. Added some lack members.|
 |`System.Threading.Tasks.ValueTask`|Supported async method builders (async-awaitable)|
-|String interpolation features|`FormattedString` and `DefaultInterpolatedStringHandler`|
+|String interpolation features|`FormattedString` and `DefaultInterpolatedStringHandler` types.|
+|`System.Linq` operators|`Append`, `Prepend`, `TakeLast`, `SkipLast`, `Zip` and `ToHashSet` methods.|
 
-Lack some `Task` members in earlier third-party library.
+Lack some `Task` members in earlier third-party library:
 
 * `System.Threading.Tasks.TaskEx.FromException()` is not defined in third-party library.
   * Use `Task.Factory.FromException()` instead.
@@ -64,6 +66,8 @@ Lack some `Task` members in earlier third-party library.
 ----
 
 ## Tips
+
+### Build .NET Framework assembly on Linux or others
 
 When you want to build .NET Framework project in Linux and other non-Windows environment,
 that package supports ability for referencing of .NET Framework assemblies:
@@ -75,6 +79,10 @@ that package supports ability for referencing of .NET Framework assemblies:
     PrivateAssets="All" />
 </ItemGroup>
 ```
+
+### Completely hidden Compat assembly into your project
+
+We suggest using [ILRepack.FullAuto](https://github.com/kekyo/ILRepack.FullAuto).
 
 ----
 
@@ -92,7 +100,7 @@ Backport PRs are welcome. The following is our backporting policy:
   * Example: [Microsoft.Bcl.Async package](https://www.nuget.org/packages/Microsoft.Bcl.Async), which provides backward compatibility of `Task` with .NET Framework 4.0.
 * When referencing third-party libraries, do not generate unnecessary references.
   * For example, `net6.0` is nearly up-to-date, and references to libraries should not be included when using `net6.0`. To achieve this, define the `PackageReference` to be excluded by `Condition`.
-* Increase the TFM if it is to fill an incompatibility with a TFM that is not currently included.
+* Add the new TFM if it is to fill an incompatibility with a TFM that is not currently included.
 * Do not include non-backporting any extensions.
 * Write some kind of unit test. Of course, a comprehensive and exhaustive test code would be perfect.
 
@@ -106,6 +114,9 @@ Apache-v2.
 
 ## History
 
+* 0.2.0:
+  * Added some LINQ operators.
+  * Added `Task.WaitAsync` methods.
 * 0.1.0:
   * Added `ValueTask`, `ValueTuple` and some minor members.
   * Adjust dependencies.
