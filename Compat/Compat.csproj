@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="('$(TargetFramework)' != 'net35') AND ('$(TargetFramework)' != 'net40')">
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.3" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup Condition="('$(TargetFramework)' == 'net461') OR ('$(TargetFramework)' == 'net462') OR ('$(TargetFramework)' == 'net48') OR ('$(TargetFramework)' == 'netstandard2.0') OR ('$(TargetFramework)' == 'netcoreapp2.0')">
