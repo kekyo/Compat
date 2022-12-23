@@ -22,9 +22,35 @@
         ret
     }
 
+    .method public hidebysig static !!T& AsRef<T>(!!T& v) cil managed
+    {
+        ldarg.0
+        ret
+    }
+
     .method public hidebysig static int32 SizeOf<T>() cil managed
     {
         sizeof !!T
+        ret
+    }
+
+    .method public hidebysig static !!T As<class T>(object obj) cil managed
+    {
+        ldarg.0
+        ret
+    }
+
+    .method public hidebysig static !!TTo& As<TFrom, TTo>(!!TFrom& from) cil managed
+    {
+        ldarg.0
+        ret
+    }
+
+    .method public hidebysig static native int ByteOffset<T>(!!T& origin, !!T& target) cil managed
+    {
+        ldarg.1
+        ldarg.0
+        sub
         ret
     }
 }
