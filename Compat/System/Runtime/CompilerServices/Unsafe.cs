@@ -33,6 +33,24 @@ public static class Unsafe
 
     [MethodImpl(MethodImplOptions.ForwardRef)]
     public static extern IntPtr ByteOffset<T>(ref T origin, ref T target);
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern unsafe void Copy<T>(void* destination, ref T source);
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern unsafe void Copy<T>(ref T destination, void* source);
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern unsafe void CopyBlock(void* destination, void* source, uint byteCount);
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern unsafe void CopyBlock(ref byte destination, ref byte source, uint byteCount);
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern unsafe void CopyBlockUnaligned(void* destination, void* source, uint byteCount);
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern unsafe void CopyBlockUnaligned(ref byte destination, ref byte source, uint byteCount);
 }
 
 #endif

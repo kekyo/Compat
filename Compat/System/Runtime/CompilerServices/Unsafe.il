@@ -53,4 +53,60 @@
         sub
         ret
     }
+
+    .method public hidebysig static void Copy<T>(void* destination, !!T& source) cil managed
+    {
+        ldarg.0
+        ldarg.1
+        ldobj !!T
+        stobj !!T
+        ret
+    }
+
+    .method public hidebysig static void Copy<T>(!!T& destination, void* source) cil managed
+    {
+        ldarg.0
+        ldarg.1
+        ldobj !!T
+        stobj !!T
+        ret
+    }
+
+    .method public hidebysig static void CopyBlock(void* destination, void* source, uint32 byteCount) cil managed
+    {
+        ldarg.0
+        ldarg.1
+        ldarg.2
+        cpblk
+        ret
+    }
+
+    .method public hidebysig static void CopyBlock(uint8& destination, uint8& source, uint32 byteCount) cil managed
+    {
+        ldarg.0
+        ldarg.1
+        ldarg.2
+        cpblk
+        ret
+    }
+
+    .method public hidebysig static void CopyBlockUnaligned(void* destination, void* source, uint32 byteCount) cil managed
+    {
+        ldarg.0
+        ldarg.1
+        ldarg.2
+        unaligned. 1
+        cpblk
+        ret
+    }
+
+    .method public hidebysig static void CopyBlockUnaligned(uint8& destination, uint8& source, uint32 byteCount) cil managed
+    {
+        ldarg.0
+        ldarg.1
+        ldarg.2
+        unaligned. 1
+        cpblk
+        ret
+    }
 }
