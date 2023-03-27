@@ -144,6 +144,9 @@ Apache-v2.
 
 ## History
 
+* 0.3.0:
+  * Added `Unsafe` methods (partially).
+  * Adjusted ValueTask related package version dependency.
 * 0.2.0:
   * Added some LINQ operators.
   * Added `Task.WaitAsync` methods.
