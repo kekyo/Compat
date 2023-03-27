@@ -10,6 +10,7 @@
 using NUnit.Framework;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace System.Runtime.CompilerServices;
@@ -207,5 +208,56 @@ public sealed class UnsafeTests
         {
             Marshal.FreeHGlobal(pd0);
         }
+    }
+
+    [Test]
+    public unsafe void InitToPointer()
+    {
+        var s = Unsafe.SizeOf<Guid>();
+        var expected = new Guid(
+            Enumerable.Repeat((byte)0x5a, s).ToArray());
+        var actual = default(Guid);
+
+        var pa = Unsafe.AsPointer(ref actual);
+
+        Unsafe.InitBlock(pa, 0x5a, (uint)s);
+
+        Assert.AreEqual(expected, actual);
+    }
+
+    [Test]
+    public unsafe void InitToRef()
+    {
+        var s = Unsafe.SizeOf<Guid>();
+        var expected = new Guid(
+            Enumerable.Repeat((byte)0x5a, s).ToArray());
+        var actual = default(Guid);
+
+        ref var ra = ref Unsafe.AsRef<byte>(Unsafe.AsPointer(ref actual));
+
+        Unsafe.InitBlock(ref ra, 0x5a, (uint)s);
+
+        Assert.AreEqual(expected, actual);
+    }
+
+    [Test]
+    public unsafe void Read()
+    {
+        var expected = Guid.NewGuid();
+
+        var actual = Unsafe.Read<Guid>(Unsafe.AsPointer(ref expected));
+
+        Assert.AreEqual(expected, actual);
+    }
+
+    [Test]
+    public unsafe void Write()
+    {
+        var expected = Guid.NewGuid();
+        var actual = default(Guid);
+
+        Unsafe.Write(Unsafe.AsPointer(ref actual), expected);
+
+        Assert.AreEqual(expected, actual);
     }
 }

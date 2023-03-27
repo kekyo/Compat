@@ -109,4 +109,42 @@
         cpblk
         ret
     }
+
+    .method public hidebysig static void InitBlock(void* startAddress, uint8 v, uint32 byteCount) cil managed
+    {
+        ldarg.0
+        ldarg.1
+        ldarg.2
+        initblk
+        ret
+    }
+
+    .method public hidebysig static void InitBlock(uint8& startAddress, uint8 v, uint32 byteCount) cil managed
+    {
+        ldarg.0
+        ldarg.1
+        ldarg.2
+        initblk
+        ret
+    }
+
+    .method public hidebysig static void InitBlockUnaligned(void* startAddress, uint8 v, uint32 byteCount) cil managed
+    {
+        ldarg.0
+        ldarg.1
+        ldarg.2
+        unaligned. 1
+        initblk
+        ret
+    }
+
+    .method public hidebysig static void InitBlockUnaligned(uint8& startAddress, uint8 v, uint32 byteCount) cil managed
+    {
+        ldarg.0
+        ldarg.1
+        ldarg.2
+        unaligned. 1
+        initblk
+        ret
+    }
 }

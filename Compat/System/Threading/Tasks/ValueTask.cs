@@ -7,7 +7,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#if NET35 || NET40 || NET45 || NET452 || NETSTANDARD1_3 || NETSTANDARD1_6
+#if NET35 || NET40 || NETSTANDARD1_3 || NETSTANDARD1_6
 
 using System.Runtime.CompilerServices;
 

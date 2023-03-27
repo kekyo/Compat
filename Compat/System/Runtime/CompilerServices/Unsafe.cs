@@ -51,6 +51,23 @@ public static class Unsafe
 
     [MethodImpl(MethodImplOptions.ForwardRef)]
     public static extern unsafe void CopyBlockUnaligned(ref byte destination, ref byte source, uint byteCount);
-}
 
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern unsafe void InitBlock(void* startAddress, byte value, uint byteCount);
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern void InitBlock(ref byte startAddress, byte value, uint byteCount);
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern unsafe void InitBlockUnaligned(void* startAddress, byte value, uint byteCount);
+
+    [MethodImpl(MethodImplOptions.ForwardRef)]
+    public static extern void InitBlockUnaligned(ref byte startAddress, byte value, uint byteCount);
+
+    public static unsafe T Read<T>(void* source) =>
+        As<byte, T>(ref *(byte*)source);
+
+    public static unsafe void Write<T>(void* destination, T value) =>
+        As<byte, T>(ref *(byte*)destination) = value;
+}
 #endif

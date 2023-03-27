@@ -20,11 +20,11 @@
     <PackageReference Include="Microsoft.Bcl.Async" Version="1.0.168" />
   </ItemGroup>
 
-  <ItemGroup Condition="('$(TargetFramework)' != 'net35') AND ('$(TargetFramework)' != 'net40')">
+  <ItemGroup Condition="('$(TargetFramework)' != 'net35') AND ('$(TargetFramework)' != 'net40') AND ('$(TargetFramework)' != 'netcoreapp3.0') AND ('$(TargetFramework)' != 'netcoreapp3.1') AND ('$(TargetFramework)' != 'net5.0') AND ('$(TargetFramework)' != 'net6.0') AND ('$(TargetFramework)' != 'net7.0')">
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.3" />
   </ItemGroup>
 
-  <ItemGroup Condition="('$(TargetFramework)' == 'net461') OR ('$(TargetFramework)' == 'net462') OR ('$(TargetFramework)' == 'net48') OR ('$(TargetFramework)' == 'netstandard2.0') OR ('$(TargetFramework)' == 'netcoreapp2.0')">
+  <ItemGroup Condition="('$(TargetFramework)' == 'net45') OR ('$(TargetFramework)' == 'net452') OR ('$(TargetFramework)' == 'net461') OR ('$(TargetFramework)' == 'net462') OR ('$(TargetFramework)' == 'net48') OR ('$(TargetFramework)' == 'netstandard2.0') OR ('$(TargetFramework)' == 'netcoreapp2.0')">
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
 
